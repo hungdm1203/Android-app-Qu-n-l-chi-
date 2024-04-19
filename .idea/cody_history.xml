@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChatHistory">
+    <chats>
+      <list>
+        <chat>
+          <accountId value="VXNlcjozNzQxMDU=" />
+          <internalId value="0709e38a-66dd-4752-ab0d-caa72f3ad703" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="fix FATAL EXCEPTION: main&#10;                                                                                                    Process: com.example.quanlychitieu, PID: 11136&#10;                                                                                                    java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.GridView.setVisibility(int)' on a null object reference&#10;                                                                                                    &#9;at com.example.quanlychitieu.MainActivity.showBottomDialog(MainActivity.java:150)&#10;                                                                                                    &#9;at com.example.quanlychitieu.MainActivity.access$000(MainActivity.java:35)&#10;                                                                                                    &#9;at com.example.quanlychitieu.MainActivity$1.onClick(MainActivity.java:126)&#10;                                                                                                    &#9;at android.view.View.performClick(View.java:7441)&#10;                                                                                                    &#9;at android.view.View.performClickInternal(View.java:7418)&#10;                                                                                                    &#9;at android.view.View.access$3700(View.java:835)&#10;                                                                                                    &#9;at android.view.View$PerformClick.run(View.java:28676)&#10;                                                                                                    &#9;at android.os.Handler.handleCallback(Handler.java:938)&#10;                                                                                                    &#9;at android.os.Handler.dispatchMessage(Handler.java:99)&#10;                                                                                                    &#9;at android.os.Looper.loopOnce(Looper.java:201)&#10;                                                                                                    &#9;at android.os.Looper.loop(Looper.java:288)&#10;                                                                                                    &#9;at android.app.ActivityThread.main(ActivityThread.java:7839)&#10;                                                                                                    &#9;at java.lang.reflect.Method.invoke(Native Method)&#10;                                                                                                    &#9;at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:548)&#10;                                                                                                    &#9;at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1003)" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="This NullPointerException is occurring because the gridView variable is null when you try to call setVisibility() on it. &#10;&#10;A couple things to check:&#10;&#10;- Make sure the gridView is properly initialized by finding it by ID in the dialog layout:&#10;&#10;```java&#10;final GridView gridView = dialog.findViewById(R.id.gridview);&#10;```&#10;&#10;- Verify that the ID gridview exists in the bottomsheetlayout layout that you are inflating for the dialog.&#10;&#10;- If the ID exists, check that you are inflating the correct layout for the dialog:&#10;&#10;```java &#10;dialog.setContentView(R.layout.bottomsheetlayout);&#10;```&#10;&#10;- Try moving the gridView initialization before you call setContentView(), in case the findViewById() is happening before the view is inflated.&#10;&#10;- Finally, you could switch to late initialization and look up the gridView again just before calling setVisibility():&#10;&#10;```java&#10;GridView gridView = dialog.findViewById(R.id.gridview);&#10;// other dialog setup code&#10;&#10;// late init &#10;gridView = dialog.findViewById(R.id.gridview);&#10;gridView.setVisibility(View.VISIBLE);&#10;```&#10;&#10;This should help resolve the null issue and prevent the NPE crash." />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-04-04T22:56:45.2141851" />
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozNzQxMDU=" />
+          <internalId value="24469ea9-1348-437d-9fd3-5a2e6bbcf2cc" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozNzQxMDU=" />
+          <internalId value="dfe6241c-9785-4747-996c-035226955a40" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="Failed to open APK '/data/app/~~uup_4b037isZ0JABPPOSwA==/com.example.quanlychitieu-qtGJcL7mT2JC9pHWeyFS1Q==/base.apk': I/O error&#10;2024-04-07 12:09:15.825  4430-4430  ndroid.systemu          pid-4430                             E  Failed to open APK '/data/app/~~uup_4b037isZ0JABPPOSwA==/com.example.quanlychitieu-qtGJcL7mT2JC9pHWeyFS1Q==/base.apk': I/O error&#10;2024-04-07 12:09:15.833  4430-4430  ResourcesManager        pid-4430                             E  failed to add asset path '/data/app/~~uup_4b037isZ0JABPPOSwA==/com.example.quanlychitieu-qtGJcL7mT2JC9pHWeyFS1Q==/base.apk'&#10;                                                                                                    java.io.IOException: Failed to load asset path /data/app/~~uup_4b037isZ0JABPPOSwA==/com.example.quanlychitieu-qtGJcL7mT2JC9pHWeyFS1Q==/base.apk&#10;                                                                                                    &#9;at android.content.res.ApkAssets.nativeLoad(Native Method)&#10;                                                                                                    &#9;at android.content.res.ApkAssets.&amp;lt;init&amp;gt;(ApkAssets.java:295)&#10;                                                                                                    &#9;at android.content.res.ApkAssets.loadFromPath(ApkAssets.java:144)&#10;                                                                                                    &#9;at android.app.ResourcesManager.loadApkAssets(ResourcesManager.java:454)&#10;                                                                                                    &#9;at android.app.ResourcesManager.access$000(ResourcesManager.java:72)&#10;                                                                                                    &#9;at android.app.ResourcesManager$ApkAssetsSupplier.load(ResourcesManager.java:168)&#10;                                                                                                    &#9;at android.app.ResourcesManager.createAssetManager(ResourcesManager.java:530)&#10;                                                                                                    &#9;at android.app.ResourcesManager.createResourcesImpl(ResourcesManager.java:612)&#10;                                                                                                    &#9;at android.app.ResourcesManager.findOrCreateResourcesImplForKeyLocked(ResourcesManager.java:664)&#10;                                                                                                    &#9;at android.app.ResourcesManager.createResources(ResourcesManager.java:1011)&#10;                                                                                                    &#9;at android.app.ResourcesManager.getResources(ResourcesManager.java:1114)&#10;                                                                                                    &#9;at android.app.ActivityThread.getTopLevelResources(ActivityThread.java:2372)&#10;                                                                                                    &#9;at android.app.ApplicationPackageManager.getResourcesForApplication(ApplicationPackageManager.java:1751)&#10;                                                                                                    &#9;at android.app.ApplicationPackageManager.getResourcesForApplication(ApplicationPackageManager.java:1737)&#10;                                                                                                    &#9;at android.app.ApplicationPackageManager.getDrawable(ApplicationPackageManager.java:1506)&#10;                                                                                                    &#9;at android.app.ApplicationPackageManager.loadUnbadgedItemIcon(ApplicationPackageManager.java:3029)&#10;                                                                                                    &#9;at android.content.pm.PackageItemInfo.loadUnbadgedIcon(PackageItemInfo.java:290)&#10;                                                                                                    &#9;at com.android.systemui.toast.SystemUIToast.getBadgedIcon(SystemUIToast.java:284)&#10;                                                                                                    &#9;at com.android.systemui.toast.SystemUIToast.inflateToastView(SystemUIToast.java:198)&#10;                                                                                                    &#9;at com.android.systemui.toast.SystemUIToast.&amp;lt;init&amp;gt;(SystemUIToast.java:90)&#10;                                                                                                    &#9;at com.android.systemui.toast.SystemUIToast.&amp;lt;init&amp;gt;(SystemUIToast.java:77)&#10;                                                                                                    &#9;at com.android.systemui.toast.ToastFactory.createToast(ToastFactory.java:78)&#10;                                                                                                    &#9;at com.android.systemui.toast.ToastUI.lambda$showToast$0(ToastUI.java:113)&#10;                                                                                                    &#9;at com.android.systemui.toast.ToastUI.$r8$lambda$w_gPCh3F8Xxn1jN4lkQZoUci71c(Unknown Source:0)&#10;                                                                                                    &#9;at com.android.systemui.toast.ToastUI$$ExternalSyntheticLambda0.run(Unknown Source:16)&#10;                                                                                                    &#9;at com.android.systemui.toast.ToastUI.showToast(ToastUI.java:140)&#10;                                                                                                    &#9;at com.android.systemui.statusbar.CommandQueue$H.handleMessage(CommandQueue.java:1431)&#10;                                                                                                    &#9;at android.os.Handler.dispatchMessage(Handler.java:106)&#10;                                                                                                    &#9;at android.os.Looper.loopOnce(Looper.java:201)&#10;                                                                                                    &#9;at android.os.Looper.loop(Looper.java:288)&#10;                                                                                                    &#9;at android.app.ActivityThread.main(ActivityThread.java:7839)&#10;                                                                                                    &#9;at java.lang.reflect.Method.invoke(Native Method)&#10;                                                                                                    &#9;at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:548)&#10;                                                                                                    &#9;at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1003) fix error" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="This error indicates that the Android system failed to open and load the base APK file for your app at the path /data/app/~~uup_4b037isZ0JABPPOSwA==/com.example.quanlychitieu-qtGJcL7mT2JC9pHWeyFS1Q==/base.apk. &#10;&#10;Some things you can try to fix this:&#10;&#10;- Make sure the base APK file exists at that path and has correct permissions. You may need to reinstall the app.&#10;&#10;- Check for storage issues on the device like low storage space or corrupted storage. Clearing app data or rebooting may help.&#10;&#10;- Try building a new debug APK and reinstalling the app.&#10;&#10;- Look for any issues when building the APK like missing resources or assets.&#10;&#10;- Ensure the APK is signed properly and not corrupted.&#10;&#10;- Try on different device or emulator in case it's an issue with that specific one.&#10;&#10;- File a bug against the Android Framework if it persists and you can't determine the cause.&#10;&#10;The key is the IOException shows it failed reading the APK file for some reason. Focus on the app install and APK itself first before looking at deeper system issues." />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-04-07T12:10:11.8625456" />
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozNzQxMDU=" />
+          <internalId value="541a959c-9eb2-42ed-b125-56f165fda38b" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="FATAL EXCEPTION: main&#10;                                                                                                    Process: com.example.quanlychitieu, PID: 7540&#10;                                                                                                    java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String com.example.quanlychitieu.Account.getTk()' on a null object reference&#10;                                                                                                    &#9;at com.example.quanlychitieu.HomeFragment.getData(HomeFragment.java:128)&#10;                                                                                                    &#9;at com.example.quanlychitieu.HomeFragment.onCreateView(HomeFragment.java:86)&#10;                                                                                                    &#9;at androidx.fragment.app.Fragment.performCreateView(Fragment.java:2963)&#10;                                                                                                    &#9;at androidx.fragment.app.FragmentStateManager.createView(FragmentStateManager.java:518)&#10;                                                                                                    &#9;at androidx.fragment.app.FragmentStateManager.moveToExpectedState(FragmentStateManager.java:282)&#10;                                                                                                    &#9;at androidx.fragment.app.FragmentManager.executeOpsTogether(FragmentManager.java:2189)&#10;                                                                                                    &#9;at androidx.fragment.app.FragmentManager.removeRedundantOperationsAndExecute(FragmentManager.java:2100)&#10;                                                                                                    &#9;at androidx.fragment.app.FragmentManager.execPendingActions(FragmentManager.java:2002)&#10;                                                                                                    &#9;at androidx.fragment.app.FragmentManager.dispatchStateChange(FragmentManager.java:3138)&#10;                                                                                                    &#9;at androidx.fragment.app.FragmentManager.dispatchActivityCreated(FragmentManager.java:3072)&#10;                                                                                                    &#9;at androidx.fragment.app.FragmentController.dispatchActivityCreated(FragmentController.java:251)&#10;                                                                                                    &#9;at androidx.fragment.app.FragmentActivity.onStart(FragmentActivity.java:502)&#10;                                                                                                    &#9;at androidx.appcompat.app.AppCompatActivity.onStart(AppCompatActivity.java:251)&#10;                                                                                                    &#9;at android.app.Instrumentation.callActivityOnStart(Instrumentation.java:1455)&#10;                                                                                                    &#9;at android.app.Activity.performStart(Activity.java:8076)&#10;                                                                                                    &#9;at android.app.ActivityThread.handleStartActivity(ActivityThread.java:3660)&#10;                                                                                                    &#9;at android.app.servertransaction.TransactionExecutor.performLifecycleSequence(TransactionExecutor.java:221)&#10;                                                                                                    &#9;at android.app.servertransaction.TransactionExecutor.cycleToPath(TransactionExecutor.java:201)&#10;                                                                                                    &#9;at android.app.servertransaction.TransactionExecutor.executeLifecycleState(TransactionExecutor.java:173)&#10;                                                                                                    &#9;at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:97)&#10;                                                                                                    &#9;at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2210)&#10;                                                                                                    &#9;at android.os.Handler.dispatchMessage(Handler.java:106)&#10;                                                                                                    &#9;at android.os.Looper.loopOnce(Looper.java:201)&#10;                                                                                                    &#9;at android.os.Looper.loop(Looper.java:288)&#10;                                                                                                    &#9;at android.app.ActivityThread.main(ActivityThread.java:7839)&#10;                                                                                                    &#9;at java.lang.reflect.Method.invoke(Native Method)&#10;                                                                                                    &#9;at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:548)&#10;                                                                                                    &#9;at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1003)" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="This NullPointerException is being thrown because you are trying to call getTk() on a Account object that is null. &#10;&#10;Some things to check:&#10;&#10;- Make sure MainActivity.account is not null before calling methods on it. You may need to initialize it or check for null.&#10;&#10;- Find where MainActivity.account is set and make sure it is happening before this code executes.&#10;&#10;- Double check that the account data is being retrieved and set properly before this fragment's onCreateView() method is called.&#10;&#10;- If MainActivity.account is meant to be accessed statically, ensure it is being set correctly in a static initialization block or method.&#10;&#10;The key is tracing back where MainActivity.account comes from and making sure it is not null before trying to use it here. Adding some debug logs or breakpoints could help uncover where it is going wrong." />
+              </message>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="Please correct me" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="Here is one way to fix the NullPointerException in your HomeFragment:&#10;&#10;```java&#10;private void getData() {&#10;&#10;  arrayListMoney=new ArrayList&lt;&gt;();&#10;&#10;  moneyAdapter = new MoneyAdapter(getActivity(), R.layout.line_money, MainActivity.moneyArrayList);&#10;&#10;  lv.setAdapter(moneyAdapter);&#10;&#10;  Cursor cursor = MainActivity.databaseSQLite.GetData(&quot;SELECT * FROM money&quot;);&#10;&#10;  // Add null check before using MainActivity.account&#10;  if(MainActivity.account != null) {&#10;&#10;    // Use MainActivity.account here...&#10;    String tk = MainActivity.account.getTk();&#10;&#10;  } else {&#10;&#10;    // MainActivity.account is null, handle this case&#10;&#10;  }&#10;&#10;}&#10;```&#10;&#10;The key points:&#10;&#10;- Check if MainActivity.account is null before using it&#10;- If it is null, handle that case appropriately (e.g. log, set default values, etc)&#10;- Make sure MainActivity.account is initialized before this method is called&#10;&#10;You may also want to check where MainActivity.account is set and make sure it happens early in the activity lifecycle, before fragments try to access it.&#10;&#10;Let me know if this helps explain one way to fix the issue!" />
+              </message>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="When I log in successfully, the account has been assigned to something other than null, why is there still an error?" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="Good question. There are a few possible reasons why you might still get a NullPointerException on MainActivity.account even after logging in successfully:&#10;&#10;1. The account is not being set correctly on login. I would double check the login flow - make sure you are retrieving the account object from the database and assigning it to MainActivity.account after a successful login.&#10;&#10;2. The account is being set asynchronously. If the account data is loaded in the background, MainActivity.account may be null initially even after login, before the async task completes. You'll need to wait for the async task to finish before accessing it.&#10;&#10;3. The account is not static. If MainActivity.account is an instance field rather than static, it could be getting reset somewhere, like on configuration changes. You may want to make it static to persist.&#10;&#10;4. The account is not cached properly. If MainActivity is getting recreated for some reason, the account could be getting lost. You may need to cache it in something like the ViewModel.&#10;&#10;5. The timing of when fragments access it. Fragments may try to read the account before it is initialized after login. See if you can delay fragment creation until after login.&#10;&#10;I'd recommend adding some logging to trace the value of MainActivity.account during the login process and see where it gets set back to null. That should help uncover where things are going wrong. Let me know if any of those suggestions help or if you have any other questions!" />
+              </message>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="In Mainactivity I have declared public static Account account; at Login_Signup I have:&#10;  for(Account acc:MainActivity.accountArrayList){&#10;             if(tk.equals(acc.getTk())&amp;amp;&amp;amp;mk.equals(acc.getMk())){&#10;                 MainActivity.account=acc;&#10;                 ok=1;break;&#10;             }&#10;         }&#10;Why is account still equal to null?" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="A couple things could be going on here:&#10;&#10;1. MainActivity.accountArrayList is empty or null, so the loop is never executing to set MainActivity.account.&#10;&#10;- Make sure you are properly initializing MainActivity.accountArrayList with data before trying to search through it.&#10;&#10;2. The login credentials don't match any account in the list, so MainActivity.account is never getting set. &#10;&#10;- I'd log or debug to check the values of tk and mk and make sure they match an account in the array list.&#10;&#10;3. The account is getting set, but later reset to null somewhere else in the code. &#10;&#10;- Look for any other places where MainActivity.account may be getting reassigned or reset and make sure the logic is correct there.&#10;&#10;Some things you could try:&#10;&#10;- Log the size of accountArrayList before loop to make sure it's &gt; 0. &#10;&#10;- Print or log tk and mk before loop to verify values.&#10;&#10;- Log MainActivity.account after loop to see if it got set.&#10;&#10;- Search project for other places MainActivity.account is modified.&#10;&#10;My guess is that the accountArrayList is empty or tk/mk don't match anything in the list, so the loop never runs to set the account field. Adding some strategic logging should help pinpoint where the issue is occurring." />
+              </message>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="I checked and arraylistAccount is not empty, tk and mk are the same as in arraylietAccount, there is no place to change account to null. Please correct me" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="Since the accountArrayList is not empty and the tk/mk values match, the most likely issue is that MainActivity.account is getting set back to null somewhere after you set it in the login logic. &#10;&#10;Here are a few things you can try to prevent it from getting reset:&#10;&#10;- Make MainActivity.account final so it can only be assigned once:&#10;&#10;```&#10;public static final Account account;&#10;```&#10;&#10;- Store account in a ViewModel instead of the Activity directly. This will retain the value on config changes.&#10;&#10;- Cache the account in onSaveInstanceState() and restore in onCreate() to persist across activity restart.&#10;&#10;- Make sure you are not accidentally re-initializing MainActivity which would reset the account.&#10;&#10;- Search for any other places in the code that MainActivity.account may be set to check logic.&#10;&#10;- Use the debugger or logging to trace the value of MainActivity.account after login succeeds to see where it gets reset.&#10;&#10;The key is finding where it is getting incorrectly cleared and preserving the value you set at login time. Let me know if you have any other questions!" />
+              </message>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="Fuck you stupid" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="I apologize, I did not intend to provide unhelpful suggestions. Debugging null pointer issues can be frustrating. Let me know if you would like me to explain the approaches in more detail or if there is anything else I can do to assist you in resolving this bug. I'm happy to help walk through it until we get it fixed." />
+              </message>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="Why does it not update the listview in HomeFragment when clicking the add button?" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="There are a few possible reasons why the ListView in HomeFragment is not updating when clicking the add button:&#10;&#10;1. The adapter is not being notified of data changes. After adding new data, you need to call `notifyDataSetChanged()` on the adapter to refresh the ListView.&#10;&#10;2. The ListView is not using the updated adapter reference. Ensure you are setting or updating the adapter on the ListView after data changes with `lv.setAdapter(adapter)`. &#10;&#10;3. The data source backing the adapter is not being modified. Double check that the code adding new data is actually adding items to the List/ArrayList the adapter is using.&#10;&#10;4. The ListView is not being refreshed. You may need to call `lv.invalidateViews()` or `lv.refreshDrawableState()` to force a refresh.&#10;&#10;5. There is an issue with the adapter implementation. Make sure the `getCount()` and `getView()` methods are implemented properly to reflect new data.&#10;&#10;Some things to try:&#10;&#10;- Log the data source size before and after adding to verify items are being added.&#10;&#10;- Add a `println` in the adapter's `getCount()` to ensure it updates. &#10;&#10;- Call `notifyDataSetChanged()` after adding new data.&#10;&#10;- Set the updated adapter again after data changes.&#10;&#10;- Invalidate or refresh the ListView after adding data.&#10;&#10;Let me know if any of those suggestions help or if you need any clarification!" />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-04-08T01:21:51.9990818" />
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozNzQxMDU=" />
+          <internalId value="b6889429-20e3-4139-8f6d-fd726bb21687" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozNzQxMDU=" />
+          <internalId value="0b0d84bd-fbd9-4830-be6b-1fd92ad67318" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozNzQxMDU=" />
+          <internalId value="103c4341-a9b3-4914-8ffe-89334bae1ddb" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+        </chat>
+      </list>
+    </chats>
+  </component>
+</project>

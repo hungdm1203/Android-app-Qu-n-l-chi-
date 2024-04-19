@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgr"
+    tools:context=".SettingFragment">
+
+    <TableRow
+        android:id="@+id/tableRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageAccount"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/baseline_account_circle_24" />
+
+        <TextView
+            android:id="@+id/textViewTK"
+            android:layout_width="265dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:text="Đăng nhập/Đăng kí"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            tools:textStyle="bold" />
+
+    </TableRow>
+
+    <Button
+        android:id="@+id/buttonDoiMK"
+        android:layout_width="370dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/baseline_password_24"
+        android:text="Đổi mật khẩu                              "
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableRow" />
+
+    <Button
+        android:id="@+id/buttonDoiIMG"
+        android:layout_width="370dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/baseline_image_search_24"
+        android:text="Đổi ảnh đại diện                         "
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDoiMK" />
+
+    <Button
+        android:id="@+id/buttonLoiNhac"
+        android:layout_width="370dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/baseline_access_alarm_24"
+        android:text="Lời nhắc nhở                              "
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDoiIMG" />
+
+    <Button
+        android:id="@+id/buttonVote"
+        android:layout_width="370dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/baseline_stars_24"
+        android:text="Đánh giá ứng dụng                    "
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoiNhac" />
+
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="370dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/baseline_exit_to_app_24"
+        android:text="Đăng xuất                                   "
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonVote" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
