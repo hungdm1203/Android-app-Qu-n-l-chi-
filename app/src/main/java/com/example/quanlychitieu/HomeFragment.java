@@ -196,11 +196,12 @@ public class HomeFragment extends Fragment {
         btnSua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String tk=MainActivity.account.getTk();
                 int id=arrayListMoney.get(pos).getId();
                 int price=Integer.valueOf(edtPrice.getText().toString());
                 String strDate=date.getText().toString();
                 String strNote=edtNote.getText().toString();
-                MainActivity.databaseSQLite.QueryData("UPDATE money SET price='"+price+"', date='"+strDate+"', note='"+strNote+"' WHERE id='"+id+"'");
+                MainActivity.databaseSQLite.QueryData("UPDATE money SET price='"+price+"', date='"+strDate+"', note='"+strNote+"' WHERE id='"+id+"' AND tk='"+tk+"'");
                 dialog.dismiss();
                 arrayListMoney.get(pos).setPrice(price);
                 arrayListMoney.get(pos).setDate(strDate);
@@ -215,7 +216,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int id=arrayListMoney.get(pos).getId();
-                MainActivity.databaseSQLite.QueryData("DELETE FROM money WHERE id='"+id+"'");
+                String tk=MainActivity.account.getTk();
+                MainActivity.databaseSQLite.QueryData("DELETE FROM money WHERE id='"+id+"' AND tk='"+tk+"'");
                 arrayListMoney.remove(pos);
                 moneyAdapter.notifyDataSetChanged();
                 update();

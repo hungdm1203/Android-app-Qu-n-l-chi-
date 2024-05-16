@@ -10,6 +10,15 @@ public class Money implements Comparable<Money> {
     private int price;
     private String note;
 
+    public Money(String tk, String typePrice, String type, String date, int price, String note) {
+        this.tk = tk;
+        this.type = type;
+        this.note = note;
+        this.date = date;
+        this.date2 = customDate(this.date);
+        this.typePrice = typePrice;
+        this.price = price;
+    }
 
     public Money(int id, String tk, String typePrice, String type, String date, int price, String note) {
         this.id = id;

@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
     public static ArrayList<Account> accountArrayList;
 //    public  static ArrayList<Money> moneyArrayList;
 
-    private HomeFragment fragmentHome=new HomeFragment();
+    private HomeFragment fragmentHome;
 
 
 
@@ -102,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
         //tao bang account
         databaseSQLite.QueryData("CREATE TABLE IF NOT EXISTS account (tk TEXT PRIMARY KEY, mk TEXT, hinhanh BLOB)");
         databaseSQLite.QueryData("CREATE TABLE IF NOT EXISTS money (id INTEGER PRIMARY KEY AUTOINCREMENT, tk TEXT, typePrice TEXT, type TEXT, date TEXT, price INTEGER, note TEXT,FOREIGN KEY (tk) REFERENCES account(tk))");
+        databaseSQLite.QueryData("CREATE TABLE IF NOT EXISTS reminder (id INTEGER PRIMARY KEY AUTOINCREMENT, tk TEXT, time TEXT, note TEXT, status INTEGER, FOREIGN KEY (tk) REFERENCES account(tk))");
+
         getDataAccount();
 //        getDataMoney();
     }
@@ -171,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
         bottomNavigationView=findViewById(R.id.bottomNavigationView);
         fab=findViewById(R.id.fab);
         drawerLayout=findViewById(R.id.drawer_layout);
+        fragmentHome=new HomeFragment();
         replaceFragment(fragmentHome);
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -282,7 +285,9 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
 
                                     try {
                                         int price = Integer.parseInt(edtMoney.getText().toString());
-                                        databaseSQLite.QueryData("INSERT INTO money(tk,typePrice,type,date,price,note) VALUES('"+tk+"','"+typePrice+"','"+type+"','"+date+"','"+price+"','"+note+"')");
+                                        Money m=new Money(tk,typePrice,type,date,price,note);
+                                        databaseSQLite.InsertMoney(m);
+//                                        databaseSQLite.QueryData("INSERT INTO money(tk,typePrice,type,date,price,note) VALUES('"+tk+"','"+typePrice+"','"+type+"','"+date+"','"+price+"','"+note+"')");
                                         getDataMoney();
                                         fragmentHome.getData();
                                         dialog.dismiss();
@@ -353,7 +358,9 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
 
                                     try {
                                         int price = Integer.parseInt(edtMoney.getText().toString());
-                                        databaseSQLite.QueryData("INSERT INTO money(tk,typePrice,type,date,price,note) VALUES('"+tk+"','"+typePrice+"','"+type+"','"+date+"','"+price+"','"+note+"')");
+                                        Money m=new Money(tk,typePrice,type,date,price,note);
+                                        databaseSQLite.InsertMoney(m);
+//                                        databaseSQLite.QueryData("INSERT INTO money(tk,typePrice,type,date,price,note) VALUES('"+tk+"','"+typePrice+"','"+type+"','"+date+"','"+price+"','"+note+"')");
                                         getDataMoney();
                                         fragmentHome.getData();
                                         dialog.dismiss();
@@ -407,6 +414,8 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
                 btnAddLN.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Reminder r=new Reminder(account.getTk(),tvChangeTime.getText().toString(),edtNoteLN.getText().toString());
+                        databaseSQLite.InsertReminder(r);
                         Toast.makeText(MainActivity.this, "Bạn đã thêm lời nhắc thành công!!", Toast.LENGTH_SHORT).show();
                     }
                 });

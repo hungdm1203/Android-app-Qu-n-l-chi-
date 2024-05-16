@@ -40,6 +40,30 @@ public class DatabaseSQLite extends SQLiteOpenHelper {
     }
 
 
+
+    //them 1 nguoi dung moi
+    public void InsertUser(Account acc){
+        String sql="INSERT INTO account (tk,mk) VALUES('"+acc.getTk()+"','"+acc.getMk()+"')";
+        SQLiteDatabase database=getWritableDatabase();
+        database.execSQL(sql);
+    }
+
+
+    // them 1 khoan chi tieu
+    public void InsertMoney(Money m) {
+        String sql="INSERT INTO money(tk,typePrice,type,date,price,note) VALUES('"+m.getTk()+"','"+m.getTypePrice()+"','"+m.getType()+"','"+m.getDate()+"','"+m.getPrice()+"','"+m.getNote()+"')";
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL(sql);
+    }
+
+    //them moi loi nhac
+    public void InsertReminder(Reminder r){
+        String sql = "INSERT INTO reminder(tk,time,note,status) VALUES('"+r.getTk()+"','"+r.getTime()+"','"+r.getNote()+"','"+r.getStatus()+"')";
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL(sql);
+    }
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
 

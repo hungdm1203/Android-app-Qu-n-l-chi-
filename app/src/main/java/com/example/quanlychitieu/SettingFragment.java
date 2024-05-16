@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -36,11 +37,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**
@@ -64,6 +68,8 @@ public class SettingFragment extends Fragment {
     private Button btnLogout,btnDoiMK,btnDoiIMG,btnLoiNhac,btnVote;
     private TextView tvTK;
     private ImageView imgAccount;
+
+    private ReminderAdapter adapter;
 
 
     private FragmentAListener listener;
@@ -140,7 +146,7 @@ public class SettingFragment extends Fragment {
         btnLoiNhac.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "ok!", Toast.LENGTH_LONG).show();
+                btnLoiNhacClick();
             }
         });
         btnDoiIMG.setOnClickListener(new View.OnClickListener() {
@@ -331,6 +337,48 @@ public class SettingFragment extends Fragment {
             }
         });
 
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    public void btnLoiNhacClick(){
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.reminder_layout);
+
+        ListView lv= dialog.findViewById(R.id.listReminder);
+        ImageView cancelBtn=dialog.findViewById(R.id.cancelButton);
+        Button btn=dialog.findViewById(R.id.btnSave);
+        ImageView imgTime = dialog.findViewById(R.id.changeTime);
+        TextView tvTime = dialog.findViewById(R.id.time);
+        EditText edtNote=dialog.findViewById(R.id.note);
+
+        String res=MainActivity.account.getTk();
+        Cursor getData = MainActivity.databaseSQLite.GetData("SELECT * FROM reminder WHERE tk='"+res+"'");
+        ArrayList<Reminder> arrReminder = new ArrayList<>();
+        while (getData.moveToNext()) {
+            int id = getData.getInt(0);
+            String tk = getData.getString(1);
+            String time = getData.getString(2);
+            String note = getData.getString(3);
+            int status = getData.getInt(4);
+            arrReminder.add(new Reminder(id,tk, time, note, status));
+        }
+        Collections.sort(HomeFragment.arrayListMoney);
+        adapter = new ReminderAdapter(getActivity(), R.layout.line_reminder, arrReminder);
+        lv.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override

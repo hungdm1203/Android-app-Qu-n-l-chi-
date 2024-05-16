@@ -82,8 +82,10 @@ public class Login_Signup extends AppCompatActivity implements LoginTabFragment.
             } else if(mk.length()>=6&&!mk.equals(check)){
                 Toast.makeText(this, "Bạn xác nhận chính xác mật khẩu!!", Toast.LENGTH_LONG).show();
             } else{
-                MainActivity.databaseSQLite.QueryData("INSERT INTO account (tk,mk) VALUES('"+tk+"','"+mk+"')");
-                MainActivity.accountArrayList.add(new Account(tk,mk));
+//                MainActivity.databaseSQLite.QueryData("INSERT INTO account (tk,mk) VALUES('"+tk+"','"+mk+"')");
+                Account acc = new Account(tk, mk);
+                MainActivity.databaseSQLite.InsertUser(acc);
+                MainActivity.accountArrayList.add(acc);
                 Toast.makeText(this, "Tạo tài khoản thành công, xin mời đăng nhập!!", Toast.LENGTH_LONG).show();
             }
         }

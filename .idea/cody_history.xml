@@ -167,6 +167,28 @@
             </llm>
           </llm>
         </chat>
+        <chat>
+          <accountId value="VXNlcjozNzQxMDU=" />
+          <internalId value="a6b1dd0d-7fe9-4028-93e6-91b30f5cf03a" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozNzQxMDU=" />
+          <internalId value="53897502-d21c-4c56-b2c1-b4e993593896" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+        </chat>
       </list>
     </chats>
   </component>
