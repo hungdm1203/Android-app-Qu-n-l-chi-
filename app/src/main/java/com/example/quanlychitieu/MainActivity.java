@@ -424,6 +424,7 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
                     public void onClick(View v) {
                         Reminder r=new Reminder(account.getTk(),tvChangeTime.getText().toString(),edtNoteLN.getText().toString());
                         databaseSQLite.InsertReminder(r);
+                        dialog.dismiss();
                         Toast.makeText(MainActivity.this, "Bạn đã thêm lời nhắc thành công!!", Toast.LENGTH_SHORT).show();
                     }
                 });
