@@ -1,21 +1,25 @@
-package com.example.quanlychitieu;
+package com.example.quanlychitieu.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import com.example.quanlychitieu.Models.Reminder;
+import com.example.quanlychitieu.R;
 
 import java.util.ArrayList;
 
-public class ItemAdapter extends BaseAdapter {
+public class ReminderAdapter extends BaseAdapter {
     private Context context;
     private int layout;
-    private ArrayList<Item> arrayList;
+    private ArrayList<Reminder> arrayList;
 
-    public ItemAdapter(Context context, int layout, ArrayList<Item> arrayList) {
+    public ReminderAdapter(Context context, int layout, ArrayList<Reminder> arrayList) {
         this.context = context;
         this.layout = layout;
         this.arrayList = arrayList;
@@ -37,8 +41,7 @@ public class ItemAdapter extends BaseAdapter {
     }
 
     private class ViewHolder{
-        ImageView img;
-        TextView tv;
+        Switch sc;
     }
 
     @Override
@@ -47,20 +50,24 @@ public class ItemAdapter extends BaseAdapter {
         ViewHolder viewHolder = null;
 
         if(viewHolder==null){
-            viewHolder=new ViewHolder();
+            viewHolder=new ReminderAdapter.ViewHolder();
             LayoutInflater layoutInflater= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView=layoutInflater.inflate(layout,null);
-            viewHolder.img=convertView.findViewById(R.id.imageView);
-            viewHolder.tv=convertView.findViewById(R.id.textView);
+            viewHolder.sc=convertView.findViewById(R.id.switch1);
             convertView.setTag(viewHolder);
         }else {
-            viewHolder= (ViewHolder) convertView.getTag();
+            viewHolder= (ReminderAdapter.ViewHolder) convertView.getTag();
         }
 
-        Item item=arrayList.get(position);
+        Reminder r=arrayList.get(position);
+        viewHolder.sc.setText(r.getTime()+"\n"+r.getNote());
+        if(r.getStatus()==1){
+            viewHolder.sc.setChecked(true);
+        } else {
+            viewHolder.sc.setChecked(false);
+        }
 
-        viewHolder.img.setImageResource(item.getImg());
-        viewHolder.tv.setText(item.getType());
+
 
 
         return convertView;

@@ -1,10 +1,9 @@
-package com.example.quanlychitieu;
+package com.example.quanlychitieu.Fragment;
 
 import static android.app.Activity.RESULT_OK;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,21 +24,24 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.quanlychitieu.Adapter.ReminderAdapter;
+import com.example.quanlychitieu.MainActivity;
+import com.example.quanlychitieu.Models.Reminder;
+import com.example.quanlychitieu.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -69,7 +71,6 @@ public class SettingFragment extends Fragment {
     private TextView tvTK;
     private ImageView imgAccount;
 
-    private ReminderAdapter adapter;
 
 
     private FragmentAListener listener;
@@ -363,22 +364,28 @@ public class SettingFragment extends Fragment {
         ImageView imgTime = dialog.findViewById(R.id.changeTime);
         TextView tvTime = dialog.findViewById(R.id.time);
         EditText edtNote=dialog.findViewById(R.id.note);
+        ArrayList<Reminder> arrReminder=new ArrayList<>();
+        ReminderAdapter adapter=new ReminderAdapter(getActivity(), R.layout.line_reminder, arrReminder);
 
-        String res=MainActivity.account.getTk();
-        Cursor getData = MainActivity.databaseSQLite.GetData("SELECT * FROM reminder WHERE tk='"+res+"'");
-        ArrayList<Reminder> arrReminder = new ArrayList<>();
-        while (getData.moveToNext()) {
-            int id = getData.getInt(0);
-            String tk = getData.getString(1);
-            String time = getData.getString(2);
-            String note = getData.getString(3);
-            int status = getData.getInt(4);
-            arrReminder.add(new Reminder(id,tk, time, note, status));
-        }
-        Collections.sort(HomeFragment.arrayListMoney);
-        adapter = new ReminderAdapter(getActivity(), R.layout.line_reminder, arrReminder);
-        lv.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
+        getDataReminder(lv, arrReminder, adapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Reminder r = arrReminder.get(position);
+                if (r.getStatus() == 0) {
+                    r.setStatus(1);
+                    MainActivity.databaseSQLite.QueryData("UPDATE reminder SET status=1 WHERE id='"+r.getId()+"'");
+                } else {
+                    r.setStatus(0);
+                    MainActivity.databaseSQLite.QueryData("UPDATE reminder SET status=0 WHERE id='"+r.getId()+"'");
+                }
+                getDataReminder(lv,arrReminder,adapter);
+            }
+        });
+
+
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -437,6 +444,24 @@ public class SettingFragment extends Fragment {
 
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    public void getDataReminder(ListView lv, ArrayList<Reminder> arrReminder, ReminderAdapter adapter){
+        String res=MainActivity.account.getTk();
+        Cursor getData = MainActivity.databaseSQLite.GetData("SELECT * FROM reminder WHERE tk='"+res+"'");
+        arrReminder = new ArrayList<>();
+        while (getData.moveToNext()) {
+            int id = getData.getInt(0);
+            String tk = getData.getString(1);
+            String time = getData.getString(2);
+            String note = getData.getString(3);
+            int status = getData.getInt(4);
+            arrReminder.add(new Reminder(id,tk, time, note, status));
+        }
+        adapter = new ReminderAdapter(getActivity(), R.layout.line_reminder, arrReminder);
+        lv.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.quanlychitieu;
+package com.example.quanlychitieu.Fragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -21,12 +21,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.quanlychitieu.Adapter.MoneyAdapter;
+import com.example.quanlychitieu.MainActivity;
+import com.example.quanlychitieu.Models.Item;
+import com.example.quanlychitieu.Models.Money;
+import com.example.quanlychitieu.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,7 +55,7 @@ public class SearchFragment extends Fragment {
     private String mParam2;
 
     private ArrayList<Money> arrayListMoney;
-    private String res=MainActivity.account.getTk();
+    private String res= MainActivity.account.getTk();
     private ArrayAdapter<String> adapter;
     private String all[]= {
             "Tất cả","Mua sắm","Sức khỏe","Thực phẩm","Hóa đơn","Học tập","Đồ điện tử",

@@ -5,14 +5,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.quanlychitieu.Adapter.ViewPagerAdapter;
+import com.example.quanlychitieu.Fragment.LoginTabFragment;
+import com.example.quanlychitieu.Fragment.SignupTabFragment;
+import com.example.quanlychitieu.Models.Account;
 import com.google.android.material.tabs.TabLayout;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Login_Signup extends AppCompatActivity implements LoginTabFragment.OnButtonClickListener, SignupTabFragment.OnButtonClickListener {
 

@@ -1,4 +1,4 @@
-package com.example.quanlychitieu;
+package com.example.quanlychitieu.Fragment;
 
 import android.app.Dialog;
 import android.database.Cursor;
@@ -16,6 +16,10 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.example.quanlychitieu.Adapter.LegendAdapter;
+import com.example.quanlychitieu.MainActivity;
+import com.example.quanlychitieu.Models.Money;
+import com.example.quanlychitieu.R;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.PieData;
@@ -143,7 +147,7 @@ public class ChartFragment extends Fragment {
                 monthStr = String.valueOf(month);
         if(monthStr.length()<2) monthStr = "0" + monthStr;
 
-        String res=MainActivity.account.getTk();
+        String res= MainActivity.account.getTk();
         Cursor getDataMoney = MainActivity.databaseSQLite.GetData("SELECT * FROM money WHERE tk='"+res+"' AND SUBSTR(date, 4, 2)='"+monthStr+"' AND SUBSTR(date,7,4)='"+yearStr+"'");
         moneyArrayList = new ArrayList<>();
         while (getDataMoney.moveToNext()) {

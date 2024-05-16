@@ -1,4 +1,4 @@
-package com.example.quanlychitieu;
+package com.example.quanlychitieu.Adapter;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.quanlychitieu.R;
 import com.github.mikephil.charting.components.LegendEntry;
 
 import java.util.ArrayList;

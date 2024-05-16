@@ -1,10 +1,13 @@
-package com.example.quanlychitieu;
+package com.example.quanlychitieu.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.quanlychitieu.Fragment.LoginTabFragment;
+import com.example.quanlychitieu.Fragment.SignupTabFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
@@ -16,9 +19,9 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if(position==1){
-            return  new com.example.quanlychitieu.SignupTabFragment();
+            return  new SignupTabFragment();
         }
-        return new com.example.quanlychitieu.LoginTabFragment();
+        return new LoginTabFragment();
     }
 
     @Override

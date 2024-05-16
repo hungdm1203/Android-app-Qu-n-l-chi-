@@ -1,4 +1,4 @@
-package com.example.quanlychitieu;
+package com.example.quanlychitieu.Models;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

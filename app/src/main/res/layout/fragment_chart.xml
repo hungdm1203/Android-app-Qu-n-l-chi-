@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgr"
     android:orientation="vertical"
-    tools:context=".ChartFragment">
+    tools:context=".Fragment.ChartFragment">
 
     <LinearLayout
         android:id="@+id/constraintLayout"

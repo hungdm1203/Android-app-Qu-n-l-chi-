@@ -1,4 +1,4 @@
-package com.example.quanlychitieu;
+package com.example.quanlychitieu.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

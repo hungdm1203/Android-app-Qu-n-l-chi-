@@ -1,4 +1,4 @@
-package com.example.quanlychitieu;
+package com.example.quanlychitieu.Fragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -18,13 +18,17 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.quanlychitieu.Adapter.MoneyAdapter;
+import com.example.quanlychitieu.MainActivity;
+import com.example.quanlychitieu.Models.Item;
+import com.example.quanlychitieu.Models.Money;
+import com.example.quanlychitieu.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -154,7 +158,7 @@ public class HomeFragment extends Fragment {
         edtPrice.setText(String.valueOf(arrayListMoney.get(pos).getPrice()));
         date.setText(arrayListMoney.get(pos).getDate());
         edtNote.setText(arrayListMoney.get(pos).getNote());
-        for(Item i:MainActivity.arrChiPhi){
+        for(Item i: MainActivity.arrChiPhi){
             if(arrayListMoney.get(pos).getType().equals(i.getType())){
                 img.setImageResource(i.getImg());
             }

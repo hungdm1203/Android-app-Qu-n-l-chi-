@@ -8,6 +8,10 @@ import android.database.sqlite.SQLiteStatement;
 
 import androidx.annotation.Nullable;
 
+import com.example.quanlychitieu.Models.Account;
+import com.example.quanlychitieu.Models.Money;
+import com.example.quanlychitieu.Models.Reminder;
+
 public class DatabaseSQLite extends SQLiteOpenHelper {
     public DatabaseSQLite(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

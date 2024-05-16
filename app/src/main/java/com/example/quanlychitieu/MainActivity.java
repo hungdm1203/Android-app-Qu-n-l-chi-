@@ -29,6 +29,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.quanlychitieu.Adapter.ItemAdapter;
+import com.example.quanlychitieu.Fragment.ChartFragment;
+import com.example.quanlychitieu.Fragment.HomeFragment;
+import com.example.quanlychitieu.Fragment.SearchFragment;
+import com.example.quanlychitieu.Fragment.SettingFragment;
+import com.example.quanlychitieu.Models.Account;
+import com.example.quanlychitieu.Models.Item;
+import com.example.quanlychitieu.Models.Money;
+import com.example.quanlychitieu.Models.Reminder;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -36,7 +45,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements SettingFragment.FragmentAListener {
