@@ -146,6 +146,7 @@ public class ChartFragment extends Fragment {
         String yearStr = String.valueOf(year),
                 monthStr = String.valueOf(month);
         if(monthStr.length()<2) monthStr = "0" + monthStr;
+        tvMonth.setText("Tháng " + month+" năm "+year);
 
         String res= MainActivity.account.getTk();
         Cursor getDataMoney = MainActivity.databaseSQLite.GetData("SELECT * FROM money WHERE tk='"+res+"' AND SUBSTR(date, 4, 2)='"+monthStr+"' AND SUBSTR(date,7,4)='"+yearStr+"'");
