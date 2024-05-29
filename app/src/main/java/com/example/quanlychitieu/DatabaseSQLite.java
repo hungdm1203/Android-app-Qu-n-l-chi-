@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteStatement;
 import androidx.annotation.Nullable;
 
 import com.example.quanlychitieu.Models.Account;
+import com.example.quanlychitieu.Models.KeHoachTN;
+import com.example.quanlychitieu.Models.KeHoachCT;
 import com.example.quanlychitieu.Models.Money;
 import com.example.quanlychitieu.Models.Reminder;
 
@@ -64,6 +66,37 @@ public class DatabaseSQLite extends SQLiteOpenHelper {
     public void InsertReminder(Reminder r){
         String sql = "INSERT INTO reminder(tk,time,note,status) VALUES('"+r.getTk()+"','"+r.getTime()+"','"+r.getNote()+"','"+r.getStatus()+"')";
         SQLiteDatabase database = getWritableDatabase();
+        database.execSQL(sql);
+    }
+
+
+    //them ke hoach chi tieu
+    public void InsertKeHoachCT(KeHoachCT kh){
+        String sql = "INSERT INTO khChiTieu(tk,ct1,ct2,ct3,ct4,ct5,ct6,ct7,ct8,ct9,ct10,ct11,ct12,month) VALUES('"+kh.getTk()+"','"+kh.getCt1() + "','" + kh.getCt2() + "','" + kh.getCt3() + "','" + kh.getCt4() + "','" + kh.getCt5() + "','" + kh.getCt6() + "','" + kh.getCt7() + "','" + kh.getCt8() + "','" + kh.getCt9() + "','" + kh.getCt10() + "','" + kh.getCt11() + "','" + kh.getCt12() + "','"+kh.getMonth()+"')";
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL(sql);
+    }
+
+    public void UpdateKeHoachCT(KeHoachCT kh) {
+        String sql="UPDATE khChiTieu SET ct1='"+kh.getCt1()+"', ct2='"+kh.getCt2()+"', ct3='"+kh.getCt3()+"', ct4='"+kh.getCt4()+"'"
+                + ", ct5='" + kh.getCt5() + "', ct6='" + kh.getCt6() + "', ct7='" + kh.getCt7() + "', ct8='" + kh.getCt8() + "',"
+                +"ct9='" + kh.getCt9() + "', ct10='" + kh.getCt10() + "', ct11='" + kh.getCt11() + "', ct12='" + kh.getCt12() + "' WHERE month='" + kh.getMonth() + "' AND tk='" + kh.getTk() + "'";
+        SQLiteDatabase database=getWritableDatabase();
+        database.execSQL(sql);
+    }
+
+    //them ke hoach thu nhap
+    public void InsertKeHoachTN(KeHoachTN kh){
+        String sql= "INSERT INTO khThuNhap(tk,tn1,tn2,tn3,tn4,tn5,tn6,month) VALUES('" + kh.getTk() + "','" + kh.getTn1() + "','" + kh.getTn2() + "','" + kh.getTn3() + "','" + kh.getTn4() + "','" + kh.getTn5() + "','" + kh.getTn6() + "','" + kh.getMonth() + "')";
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL(sql);
+    }
+
+    public void UpdateKeHoachTN(KeHoachTN kh) {
+        String sql="UPDATE khThuNhap SET tn1='"+kh.getTn1()+"', tn2='"+kh.getTn2()+"', tn3='"+kh.getTn3()+"', tn4='"+kh.getTn4()+"',"
+                + "tn5='" + kh.getTn5() + "', tn6='" + kh.getTn6() + "'"
+                +" WHERE month='" + kh.getMonth() + "' AND tk='" + kh.getTk() + "'";
+        SQLiteDatabase database=getWritableDatabase();
         database.execSQL(sql);
     }
 

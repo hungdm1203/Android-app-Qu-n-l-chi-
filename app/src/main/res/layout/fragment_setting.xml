@@ -91,6 +91,21 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonKeHoach" />
+
+
+    <Button
+        android:id="@+id/buttonKeHoach"
+        android:layout_width="370dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/baseline_note_add_24"
+        android:text="Kế hoạch chi tiêu                       "
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonLoiNhac" />
 
     <Button

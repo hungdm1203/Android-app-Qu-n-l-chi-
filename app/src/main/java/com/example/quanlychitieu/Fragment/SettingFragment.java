@@ -34,18 +34,25 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quanlychitieu.Adapter.ReminderAdapter;
 import com.example.quanlychitieu.MainActivity;
+import com.example.quanlychitieu.Models.KeHoachTN;
+import com.example.quanlychitieu.Models.KeHoachCT;
+import com.example.quanlychitieu.Models.Money;
 import com.example.quanlychitieu.Models.Reminder;
 import com.example.quanlychitieu.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 
 
@@ -67,7 +74,7 @@ public class SettingFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Button btnLogout,btnDoiMK,btnDoiIMG,btnLoiNhac,btnVote;
+    private Button btnLogout,btnDoiMK,btnDoiIMG,btnLoiNhac,btnVote,btnKeHoach;
     private TextView tvTK;
     private ImageView imgAccount;
 
@@ -126,6 +133,7 @@ public class SettingFragment extends Fragment {
         btnDoiIMG=view.findViewById(R.id.buttonDoiIMG);
         btnLoiNhac=view.findViewById(R.id.buttonLoiNhac);
         btnVote=view.findViewById(R.id.buttonVote);
+        btnKeHoach = view.findViewById(R.id.buttonKeHoach);
         btnLogout=view.findViewById(R.id.buttonLogout);
         imgAccount=view.findViewById(R.id.imageAccount);
         tvTK=view.findViewById(R.id.textViewTK);
@@ -144,12 +152,24 @@ public class SettingFragment extends Fragment {
                 btnVoteClick();
             }
         });
+
+
+        btnKeHoach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnKeHoachClick();
+            }
+        });
+
+
         btnLoiNhac.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnLoiNhacClick();
             }
         });
+
+
         btnDoiIMG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,12 +178,16 @@ public class SettingFragment extends Fragment {
                 startActivityForResult(intent,1);
             }
         });
+
+
         btnDoiMK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnDoiMKClick();
             }
         });
+
+
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,7 +198,7 @@ public class SettingFragment extends Fragment {
         return view;
     }
 
-    private void btnVoteClick(){
+    public void btnVoteClick(){
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.votelayout);
@@ -276,7 +300,7 @@ public class SettingFragment extends Fragment {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    private void btnLogoutClick(){
+    public void btnLogoutClick(){
         AlertDialog.Builder dialog=new AlertDialog.Builder(getActivity());
         dialog.setMessage("Bạn có muốn đăng xuất??");
         dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -401,7 +425,7 @@ public class SettingFragment extends Fragment {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    private void load() {
+    public void load() {
         tvTK.setText(MainActivity.account.getTk());
         if(MainActivity.account.getHinhanh()!=null){
             //chuyen tu byte[]->image hinh anh
@@ -411,6 +435,382 @@ public class SettingFragment extends Fragment {
         } else{
             imgAccount.setImageResource(R.drawable.baseline_account);
         }
+    }
+
+    private void btnKeHoachClick(){
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.planlayout);
+
+        LinearLayout layoutCP= dialog.findViewById(R.id.layoutChiPhi),
+                        layoutTN = dialog.findViewById(R.id.layoutThuNhap);
+        ScrollView cp= dialog.findViewById(R.id.chiPhi), tn = dialog.findViewById(R.id.thuNhap);
+        EditText edt01 = dialog.findViewById(R.id.edt01), edt02= dialog.findViewById(R.id.edt02),
+                edt03 = dialog.findViewById(R.id.edt03), edt04 = dialog.findViewById(R.id.edt04),
+                edt05 = dialog.findViewById(R.id.edt05), edt06 = dialog.findViewById(R.id.edt06),
+                edt07 = dialog.findViewById(R.id.edt07), edt08 = dialog.findViewById(R.id.edt08),
+                edt09 = dialog.findViewById(R.id.edt09), edt10 = dialog.findViewById(R.id.edt10),
+                edt11 = dialog.findViewById(R.id.edt11), edt12 = dialog.findViewById(R.id.edt12),
+                edt001 = dialog.findViewById(R.id.edt001), edt002 = dialog.findViewById(R.id.edt002),
+                edt003 = dialog.findViewById(R.id.edt003), edt004 = dialog.findViewById(R.id.edt004),
+                edt005 = dialog.findViewById(R.id.edt005), edt006 = dialog.findViewById(R.id.edt006);
+        Button btnHuy = dialog.findViewById(R.id.btnHuy),
+                btnOk = dialog.findViewById(R.id.btnOk);
+        TextView sumCP = dialog.findViewById(R.id.sumCP), sumTN = dialog.findViewById(R.id.sumTN),
+                tvMonth = dialog.findViewById(R.id.tvMonth);
+        ImageView imgMonth = dialog.findViewById(R.id.imgMonth);
+
+        layoutCP.setBackgroundColor(Color.parseColor("#8692f7"));
+        layoutTN.setBackgroundColor(Color.WHITE);
+        cp.setVisibility(View.VISIBLE);
+        tn.setVisibility(View.GONE);
+        Calendar calendar = Calendar.getInstance();
+        int m= calendar.get(Calendar.MONTH)+1;
+        int y= calendar.get(Calendar.YEAR);
+        tvMonth.setText("Kế hoạch chi tiêu tháng "+m+"-"+y);
+        KeHoachCT k=getKhChiTieu(m+"-"+y);
+
+        if(k!=null){
+            edt01.setText(String.valueOf(k.getCt1())); edt02.setText(String.valueOf(k.getCt2()));
+            edt03.setText(String.valueOf(k.getCt3())); edt04.setText(String.valueOf(k.getCt4()));
+            edt05.setText(String.valueOf(k.getCt5())); edt06.setText(String.valueOf(k.getCt6()));
+            edt07.setText(String.valueOf(k.getCt7())); edt08.setText(String.valueOf(k.getCt8()));
+            edt09.setText(String.valueOf(k.getCt9())); edt10.setText(String.valueOf(k.getCt10()));
+            edt11.setText(String.valueOf(k.getCt11())); edt12.setText(String.valueOf(k.getCt12()));
+            sumCP.setText(String.format("%,d", k.getSum()));
+        } else{
+            edt01.setText("0"); edt02.setText("0");
+            edt03.setText("0"); edt04.setText("0");
+            edt05.setText("0"); edt06.setText("0");
+            edt07.setText("0"); edt08.setText("0");
+            edt09.setText("0"); edt10.setText("0");
+            edt11.setText("0"); edt12.setText("0");
+            sumCP.setText("0");
+        }
+
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+
+
+
+        layoutCP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                layoutCP.setBackgroundColor(Color.parseColor("#8692f7"));
+                layoutTN.setBackgroundColor(Color.WHITE);
+                cp.setVisibility(View.VISIBLE);
+                tn.setVisibility(View.GONE);
+                String month=tvMonth.getText().toString().substring(24);
+                KeHoachCT khCT=getKhChiTieu(month);
+
+
+                if(khCT!=null){
+                    edt01.setText(String.valueOf(khCT.getCt1())); edt02.setText(String.valueOf(khCT.getCt2()));
+                    edt03.setText(String.valueOf(khCT.getCt3())); edt04.setText(String.valueOf(khCT.getCt4()));
+                    edt05.setText(String.valueOf(khCT.getCt5())); edt06.setText(String.valueOf(khCT.getCt6()));
+                    edt07.setText(String.valueOf(khCT.getCt7())); edt08.setText(String.valueOf(khCT.getCt8()));
+                    edt09.setText(String.valueOf(khCT.getCt9())); edt10.setText(String.valueOf(khCT.getCt10()));
+                    edt11.setText(String.valueOf(khCT.getCt11())); edt12.setText(String.valueOf(khCT.getCt12()));
+                    sumCP.setText(String.format("%,d", khCT.getSum()));
+                } else{
+                    edt01.setText("0"); edt02.setText("0");
+                    edt03.setText("0"); edt04.setText("0");
+                    edt05.setText("0"); edt06.setText("0");
+                    edt07.setText("0"); edt08.setText("0");
+                    edt09.setText("0"); edt10.setText("0");
+                    edt11.setText("0"); edt12.setText("0");
+                    sumCP.setText("0");
+                }
+
+                btnOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
+                        if(khCT==null){
+                            String tk=MainActivity.account.getTk();
+                            int ct1 = Integer.parseInt(edt01.getText().toString()), ct2 = Integer.parseInt(edt02.getText().toString()),
+                                    ct3 = Integer.parseInt(edt03.getText().toString()), ct4 = Integer.parseInt(edt04.getText().toString()),
+                                    ct5 = Integer.parseInt(edt05.getText().toString()), ct6 = Integer.parseInt(edt06.getText().toString()),
+                                    ct7 = Integer.parseInt(edt07.getText().toString()), ct8 = Integer.parseInt(edt08.getText().toString()),
+                                    ct9 = Integer.parseInt(edt09.getText().toString()), ct10 = Integer.parseInt(edt10.getText().toString()),
+                                    ct11 = Integer.parseInt(edt11.getText().toString()), ct12 = Integer.parseInt(edt12.getText().toString());
+                            String month=tvMonth.getText().toString().substring(24);
+                            KeHoachCT k=new KeHoachCT(tk, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8, ct9, ct10, ct11, ct12,month);
+                            MainActivity.databaseSQLite.InsertKeHoachCT(k);
+                            Toast.makeText(getActivity(), "Tạo kế hoạch thu chi thành công", Toast.LENGTH_SHORT).show();
+                        } else {
+                            khCT.setCt1(Integer.parseInt(edt01.getText().toString()));khCT.setCt2(Integer.parseInt(edt02.getText().toString()));
+                            khCT.setCt3(Integer.parseInt(edt03.getText().toString()));khCT.setCt4(Integer.parseInt(edt04.getText().toString()));
+                            khCT.setCt5(Integer.parseInt(edt05.getText().toString()));khCT.setCt6(Integer.parseInt(edt06.getText().toString()));
+                            khCT.setCt7(Integer.parseInt(edt07.getText().toString()));khCT.setCt8(Integer.parseInt(edt08.getText().toString()));
+                            khCT.setCt9(Integer.parseInt(edt09.getText().toString()));khCT.setCt10(Integer.parseInt(edt10.getText().toString()));
+                            khCT.setCt11(Integer.parseInt(edt11.getText().toString()));khCT.setCt12(Integer.parseInt(edt12.getText().toString()));
+                            MainActivity.databaseSQLite.UpdateKeHoachCT(khCT);
+                        }
+                    }
+                });
+            }
+        });
+
+        layoutTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutTN.setBackgroundColor(Color.parseColor("#8692f7"));
+                layoutCP.setBackgroundColor(Color.WHITE);
+                tn.setVisibility(View.VISIBLE);
+                cp.setVisibility(View.GONE);
+                String month = tvMonth.getText().toString().substring(24);
+                KeHoachTN khTN = getKhThuNhap(month);
+
+                if(khTN!=null){
+                    edt001.setText(String.valueOf(khTN.getTn1())); edt002.setText(String.valueOf(khTN.getTn2()));
+                    edt003.setText(String.valueOf(khTN.getTn3())); edt004.setText(String.valueOf(khTN.getTn4()));
+                    edt005.setText(String.valueOf(khTN.getTn5())); edt006.setText(String.valueOf(khTN.getTn6()));
+                    sumTN.setText(String.format("%,d", khTN.getSum()));
+                } else{
+                    edt001.setText("0"); edt002.setText("0");
+                    edt003.setText("0"); edt004.setText("0");
+                    edt005.setText("0"); edt006.setText("0");
+                    sumTN.setText("0");
+                }
+
+                btnOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        Toast.makeText(getActivity(), "456", Toast.LENGTH_SHORT).show();
+                        if(khTN==null){
+                            String tk=MainActivity.account.getTk();
+                            int tn1 = Integer.parseInt(edt001.getText().toString()), tn2 = Integer.parseInt(edt002.getText().toString()),
+                                    tn3 = Integer.parseInt(edt003.getText().toString()), tn4 = Integer.parseInt(edt004.getText().toString()),
+                                    tn5 = Integer.parseInt(edt005.getText().toString()), tn6 = Integer.parseInt(edt006.getText().toString());
+                            String month=tvMonth.getText().toString().substring(24);
+                            KeHoachTN k=new KeHoachTN(tk, tn1, tn2, tn3, tn4, tn5, tn6, month);
+                            MainActivity.databaseSQLite.InsertKeHoachTN(k);
+                            Toast.makeText(getActivity(), "Tạo kế hoạch thu chi thành công", Toast.LENGTH_SHORT).show();
+                        } else {
+                            khTN.setTn1(Integer.parseInt(edt001.getText().toString()));khTN.setTn2(Integer.parseInt(edt002.getText().toString()));
+                            khTN.setTn3(Integer.parseInt(edt003.getText().toString()));khTN.setTn4(Integer.parseInt(edt004.getText().toString()));
+                            khTN.setTn5(Integer.parseInt(edt005.getText().toString()));khTN.setTn6(Integer.parseInt(edt006.getText().toString()));
+                            MainActivity.databaseSQLite.UpdateKeHoachTN(khTN);
+                            Toast.makeText(getActivity(), edt002.getText().toString()+"-", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                String month = tvMonth.getText().toString().substring(24);
+                KeHoachCT khCT=getKhChiTieu(month);
+                if(khCT==null){
+                    String tk=MainActivity.account.getTk();
+                    int ct1 = Integer.parseInt(edt01.getText().toString()), ct2 = Integer.parseInt(edt02.getText().toString()),
+                            ct3 = Integer.parseInt(edt03.getText().toString()), ct4 = Integer.parseInt(edt04.getText().toString()),
+                            ct5 = Integer.parseInt(edt05.getText().toString()), ct6 = Integer.parseInt(edt06.getText().toString()),
+                            ct7 = Integer.parseInt(edt07.getText().toString()), ct8 = Integer.parseInt(edt08.getText().toString()),
+                            ct9 = Integer.parseInt(edt09.getText().toString()), ct10 = Integer.parseInt(edt10.getText().toString()),
+                            ct11 = Integer.parseInt(edt11.getText().toString()), ct12 = Integer.parseInt(edt12.getText().toString());
+                    KeHoachCT k=new KeHoachCT(tk, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8, ct9, ct10, ct11, ct12,month);
+                    MainActivity.databaseSQLite.InsertKeHoachCT(k);
+                    Toast.makeText(getActivity(), "Tạo kế hoạch thu chi thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    khCT.setCt1(Integer.parseInt(edt01.getText().toString()));khCT.setCt2(Integer.parseInt(edt02.getText().toString()));
+                    khCT.setCt3(Integer.parseInt(edt03.getText().toString()));khCT.setCt4(Integer.parseInt(edt04.getText().toString()));
+                    khCT.setCt5(Integer.parseInt(edt05.getText().toString()));khCT.setCt6(Integer.parseInt(edt06.getText().toString()));
+                    khCT.setCt7(Integer.parseInt(edt07.getText().toString()));khCT.setCt8(Integer.parseInt(edt08.getText().toString()));
+                    khCT.setCt9(Integer.parseInt(edt09.getText().toString()));khCT.setCt10(Integer.parseInt(edt10.getText().toString()));
+                    khCT.setCt11(Integer.parseInt(edt11.getText().toString()));khCT.setCt12(Integer.parseInt(edt12.getText().toString()));
+                    MainActivity.databaseSQLite.UpdateKeHoachCT(khCT);
+                }
+            }
+        });
+
+        imgMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /******show month picker dialog********/
+                Dialog d = new Dialog(getActivity());
+                d.setContentView(R.layout.month_picker);
+                NumberPicker monthPicker = d.findViewById(R.id.monthPicker);
+                NumberPicker yearPicker = d.findViewById(R.id.yearPicker);
+                Button okButton = d.findViewById(R.id.okButton);
+
+
+                Calendar calendar = Calendar.getInstance();
+                monthPicker.setMinValue(1);
+                monthPicker.setMaxValue(12);
+                yearPicker.setMinValue(2000);
+                yearPicker.setMaxValue(calendar.get(Calendar.YEAR));
+
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int selectedMonth = monthPicker.getValue();
+                        int selectedYear = yearPicker.getValue();
+                        tvMonth.setText("Kế hoạch chi tiêu tháng "+selectedMonth+"-"+selectedYear);
+                        d.dismiss();
+
+                        String res=tvMonth.getText().toString().substring(24);
+                        KeHoachCT tmp1 = getKhChiTieu(res);
+                        KeHoachTN tmp2 = getKhThuNhap(res);
+
+                        if(tmp1!=null){
+                            edt01.setText(String.valueOf(tmp1.getCt1())); edt02.setText(String.valueOf(tmp1.getCt2()));
+                            edt03.setText(String.valueOf(tmp1.getCt3())); edt04.setText(String.valueOf(tmp1.getCt4()));
+                            edt05.setText(String.valueOf(tmp1.getCt5())); edt06.setText(String.valueOf(tmp1.getCt6()));
+                            edt07.setText(String.valueOf(tmp1.getCt7())); edt08.setText(String.valueOf(tmp1.getCt8()));
+                            edt09.setText(String.valueOf(tmp1.getCt9())); edt10.setText(String.valueOf(tmp1.getCt10()));
+                            edt11.setText(String.valueOf(tmp1.getCt11())); edt12.setText(String.valueOf(tmp1.getCt12()));
+                            sumCP.setText(String.format("%,d", tmp1.getSum()));
+                        } else{
+                            edt01.setText("0"); edt02.setText("0");
+                            edt03.setText("0"); edt04.setText("0");
+                            edt05.setText("0"); edt06.setText("0");
+                            edt07.setText("0"); edt08.setText("0");
+                            edt09.setText("0"); edt10.setText("0");
+                            edt11.setText("0"); edt12.setText("0");
+                            sumCP.setText("0");
+                        }
+
+                        if(tmp2!=null){
+                            edt001.setText(String.valueOf(tmp2.getTn1())); edt002.setText(String.valueOf(tmp2.getTn2()));
+                            edt003.setText(String.valueOf(tmp2.getTn3())); edt004.setText(String.valueOf(tmp2.getTn4()));
+                            edt005.setText(String.valueOf(tmp2.getTn5())); edt006.setText(String.valueOf(tmp2.getTn6()));
+                            sumTN.setText(String.format("%,d", tmp2.getSum()));
+                        } else{
+                            edt001.setText("0"); edt002.setText("0");
+                            edt003.setText("0"); edt004.setText("0");
+                            edt005.setText("0"); edt006.setText("0");
+                            sumTN.setText("0");
+                        }
+                    }
+                });
+                d.show();
+                /****************/
+
+
+                layoutCP.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        layoutCP.setBackgroundColor(Color.parseColor("#8692f7"));
+                        layoutTN.setBackgroundColor(Color.WHITE);
+                        cp.setVisibility(View.VISIBLE);
+                        tn.setVisibility(View.GONE);
+                        String month=tvMonth.getText().toString().substring(24);
+                        KeHoachCT khCT=getKhChiTieu(month);
+
+
+                        if(khCT!=null){
+                            edt01.setText(String.valueOf(khCT.getCt1())); edt02.setText(String.valueOf(khCT.getCt2()));
+                            edt03.setText(String.valueOf(khCT.getCt3())); edt04.setText(String.valueOf(khCT.getCt4()));
+                            edt05.setText(String.valueOf(khCT.getCt5())); edt06.setText(String.valueOf(khCT.getCt6()));
+                            edt07.setText(String.valueOf(khCT.getCt7())); edt08.setText(String.valueOf(khCT.getCt8()));
+                            edt09.setText(String.valueOf(khCT.getCt9())); edt10.setText(String.valueOf(khCT.getCt10()));
+                            edt11.setText(String.valueOf(khCT.getCt11())); edt12.setText(String.valueOf(khCT.getCt12()));
+                            sumCP.setText(String.format("%,d", khCT.getSum()));
+                        } else{
+                            edt01.setText("0"); edt02.setText("0");
+                            edt03.setText("0"); edt04.setText("0");
+                            edt05.setText("0"); edt06.setText("0");
+                            edt07.setText("0"); edt08.setText("0");
+                            edt09.setText("0"); edt10.setText("0");
+                            edt11.setText("0"); edt12.setText("0");
+                            sumCP.setText("0");
+                        }
+
+                        btnOk.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                if(khCT==null){
+                                    String tk=MainActivity.account.getTk();
+                                    int ct1 = Integer.parseInt(edt01.getText().toString()), ct2 = Integer.parseInt(edt02.getText().toString()),
+                                            ct3 = Integer.parseInt(edt03.getText().toString()), ct4 = Integer.parseInt(edt04.getText().toString()),
+                                            ct5 = Integer.parseInt(edt05.getText().toString()), ct6 = Integer.parseInt(edt06.getText().toString()),
+                                            ct7 = Integer.parseInt(edt07.getText().toString()), ct8 = Integer.parseInt(edt08.getText().toString()),
+                                            ct9 = Integer.parseInt(edt09.getText().toString()), ct10 = Integer.parseInt(edt10.getText().toString()),
+                                            ct11 = Integer.parseInt(edt11.getText().toString()), ct12 = Integer.parseInt(edt12.getText().toString());
+                                    KeHoachCT k=new KeHoachCT(tk, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8, ct9, ct10, ct11, ct12,month);
+                                    MainActivity.databaseSQLite.InsertKeHoachCT(k);
+                                } else {
+                                    khCT.setCt1(Integer.parseInt(edt01.getText().toString()));khCT.setCt2(Integer.parseInt(edt02.getText().toString()));
+                                    khCT.setCt3(Integer.parseInt(edt03.getText().toString()));khCT.setCt4(Integer.parseInt(edt04.getText().toString()));
+                                    khCT.setCt5(Integer.parseInt(edt05.getText().toString()));khCT.setCt6(Integer.parseInt(edt06.getText().toString()));
+                                    khCT.setCt7(Integer.parseInt(edt07.getText().toString()));khCT.setCt8(Integer.parseInt(edt08.getText().toString()));
+                                    khCT.setCt9(Integer.parseInt(edt09.getText().toString()));khCT.setCt10(Integer.parseInt(edt10.getText().toString()));
+                                    khCT.setCt11(Integer.parseInt(edt11.getText().toString()));khCT.setCt12(Integer.parseInt(edt12.getText().toString()));
+                                    MainActivity.databaseSQLite.UpdateKeHoachCT(khCT);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                layoutTN.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        layoutTN.setBackgroundColor(Color.parseColor("#8692f7"));
+                        layoutCP.setBackgroundColor(Color.WHITE);
+                        tn.setVisibility(View.VISIBLE);
+                        cp.setVisibility(View.GONE);
+                        String month=tvMonth.getText().toString().substring(24);
+                        KeHoachTN khTN = getKhThuNhap(month);
+
+                        if(khTN!=null){
+                            edt001.setText(String.valueOf(khTN.getTn1())); edt002.setText(String.valueOf(khTN.getTn2()));
+                            edt003.setText(String.valueOf(khTN.getTn3())); edt004.setText(String.valueOf(khTN.getTn4()));
+                            edt005.setText(String.valueOf(khTN.getTn5())); edt006.setText(String.valueOf(khTN.getTn6()));
+                            sumTN.setText(String.format("%,d", khTN.getSum()));
+                        } else{
+                            edt001.setText("0"); edt002.setText("0");
+                            edt003.setText("0"); edt004.setText("0");
+                            edt005.setText("0"); edt006.setText("0");
+                            sumTN.setText("0");
+                        }
+
+                        btnOk.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                Toast.makeText(getActivity(), "456", Toast.LENGTH_SHORT).show();
+                                if(khTN==null){
+                                    String tk=MainActivity.account.getTk();
+                                    int tn1 = Integer.parseInt(edt001.getText().toString()), tn2 = Integer.parseInt(edt002.getText().toString()),
+                                            tn3 = Integer.parseInt(edt003.getText().toString()), tn4 = Integer.parseInt(edt004.getText().toString()),
+                                            tn5 = Integer.parseInt(edt005.getText().toString()), tn6 = Integer.parseInt(edt006.getText().toString());
+                                    KeHoachTN k=new KeHoachTN(tk, tn1, tn2, tn3, tn4, tn5, tn6, month);
+                                    MainActivity.databaseSQLite.InsertKeHoachTN(k);
+                                } else {
+                                    khTN.setTn1((Integer.parseInt(edt001.getText().toString())));khTN.setTn2((Integer.parseInt(edt002.getText().toString())));
+                                    khTN.setTn3((Integer.parseInt(edt003.getText().toString())));khTN.setTn4((Integer.parseInt(edt004.getText().toString())));
+                                    khTN.setTn5((Integer.parseInt(edt005.getText().toString())));khTN.setTn6((Integer.parseInt(edt006.getText().toString())));
+                                    MainActivity.databaseSQLite.UpdateKeHoachTN(khTN);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -487,5 +887,47 @@ public class SettingFragment extends Fragment {
 
         return output;
     }
+
+    public KeHoachCT getKhChiTieu(String month){
+        String res=MainActivity.account.getTk();
+        Cursor getDataMoney = MainActivity.databaseSQLite.GetData("SELECT * FROM khChiTieu WHERE tk='"+res+"' AND month='"+month+"'");
+        if(getDataMoney.getCount()>0){
+            while (getDataMoney.moveToNext()) {
+                int id = getDataMoney.getInt(0);
+                String tk = getDataMoney.getString(1);
+                int ct1 = getDataMoney.getInt(2), ct2 = getDataMoney.getInt(3),
+                        ct3 = getDataMoney.getInt(4),ct4=getDataMoney.getInt(5),
+                        ct5 = getDataMoney.getInt(6), ct6 = getDataMoney.getInt(7),
+                        ct7 = getDataMoney.getInt(8), ct8 = getDataMoney.getInt(9),
+                        ct9 = getDataMoney.getInt(10), ct10 = getDataMoney.getInt(11),
+                        ct11 = getDataMoney.getInt(12), ct12 = getDataMoney.getInt(13);
+                String mon = getDataMoney.getString(14);
+                KeHoachCT k = new KeHoachCT(id, tk, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8, ct9, ct10, ct11, ct12, mon);
+                return k;
+            }
+
+        }
+        return null;
+    }
+
+    public KeHoachTN getKhThuNhap(String month){
+        String res=MainActivity.account.getTk();
+        Cursor getDataMoney = MainActivity.databaseSQLite.GetData("SELECT * FROM khThuNhap WHERE tk='"+res+"' AND month='"+month+"'");
+        if(getDataMoney.getCount()>0){
+            while (getDataMoney.moveToNext()) {
+                int id = getDataMoney.getInt(0);
+                String tk = getDataMoney.getString(1);
+                int tn1 = getDataMoney.getInt(2), tn2 = getDataMoney.getInt(3),
+                        tn3 = getDataMoney.getInt(4),tn4=getDataMoney.getInt(5),
+                        tn5 = getDataMoney.getInt(6), tn6 = getDataMoney.getInt(7);
+                String mon = getDataMoney.getString(8);
+                KeHoachTN k = new KeHoachTN(id, tk, tn1, tn2, tn3, tn4, tn5, tn6,mon);
+                return k;
+            }
+
+        }
+        return null;
+    }
+
 
 }

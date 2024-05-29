@@ -19,14 +19,18 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quanlychitieu.Adapter.MoneyAdapter;
 import com.example.quanlychitieu.MainActivity;
 import com.example.quanlychitieu.Models.Item;
+import com.example.quanlychitieu.Models.KeHoachCT;
+import com.example.quanlychitieu.Models.KeHoachTN;
 import com.example.quanlychitieu.Models.Money;
 import com.example.quanlychitieu.R;
 
@@ -52,11 +56,12 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private ListView lv;
+    private String month;
 
     TextView tvChiPhi,tvThuNhap,tvSoDu,tvYear,tvMonth;
     public static ArrayList<Money> arrayListMoney;
     MoneyAdapter moneyAdapter;
-    ImageView imageView;
+    ImageView imageView, imgKeHoach;
 
 
     public interface OnDataLoadedListener {
@@ -113,16 +118,25 @@ public class HomeFragment extends Fragment {
         tvYear = view.findViewById(R.id.tvYear);
         tvMonth = view.findViewById(R.id.tvMonth);
         imageView = view.findViewById(R.id.imageView);
+        imgKeHoach = view.findViewById(R.id.keHoach);
 
         Calendar calendar = Calendar.getInstance();
         tvYear.setText(calendar.get(Calendar.YEAR)+"");
         tvMonth.setText("Thg "+(calendar.get(Calendar.MONTH)+1));
+        month = (calendar.get(Calendar.MONTH) + 1) + "-"+calendar.get(Calendar.YEAR);
         getDataFirst();
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showSelectMonth();
+            }
+        });
+
+        imgKeHoach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showKeHoach();
             }
         });
 
@@ -256,9 +270,9 @@ public class HomeFragment extends Fragment {
         String strCP = String.format("%,d", cp),
                 strTN = String.format("%,d", tn),
                 strSD = String.format("%,d", tn - cp);
-        tvChiPhi.setText(String.valueOf(strCP));
-        tvThuNhap.setText(String.valueOf(strTN));
-        tvSoDu.setText(String.valueOf(strSD));
+        tvChiPhi.setText(strCP);
+        tvThuNhap.setText(strTN);
+        tvSoDu.setText(strSD);
     }
 
 
@@ -312,6 +326,7 @@ public class HomeFragment extends Fragment {
                 tvMonth.setText("Thg " + selectedMonth);
                 tvYear.setText(String.valueOf(selectedYear));
                 selectMonth(selectedMonth,selectedYear);
+                month= selectedMonth+"-"+selectedYear;
                 dialog.dismiss();
             }
         });
@@ -344,6 +359,156 @@ public class HomeFragment extends Fragment {
         lv.setAdapter(moneyAdapter);
         moneyAdapter.notifyDataSetChanged();
         update();
+    }
+
+    public void showKeHoach(){
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.home_plan_layout);
+
+        LinearLayout layoutCP= dialog.findViewById(R.id.layoutChiPhi),
+                layoutTN = dialog.findViewById(R.id.layoutThuNhap);
+        ScrollView cp= dialog.findViewById(R.id.chiPhi), tn = dialog.findViewById(R.id.thuNhap);
+        TextView tv01 = dialog.findViewById(R.id.tv01), tv02= dialog.findViewById(R.id.tv02),
+                tv03 = dialog.findViewById(R.id.tv03), tv04 = dialog.findViewById(R.id.tv04),
+                tv05 = dialog.findViewById(R.id.tv05), tv06 = dialog.findViewById(R.id.tv06),
+                tv07 = dialog.findViewById(R.id.tv07), tv08 = dialog.findViewById(R.id.tv08),
+                tv09 = dialog.findViewById(R.id.tv09), tv10 = dialog.findViewById(R.id.tv10),
+                tv11 = dialog.findViewById(R.id.tv11), tv12 = dialog.findViewById(R.id.tv12),
+                tv001 = dialog.findViewById(R.id.tv001), tv002 = dialog.findViewById(R.id.tv002),
+                tv003 = dialog.findViewById(R.id.tv003), tv004 = dialog.findViewById(R.id.tv004),
+                tv005 = dialog.findViewById(R.id.tv005), tv006 = dialog.findViewById(R.id.tv006),
+                sumCP = dialog.findViewById(R.id.sumCP), sumTN = dialog.findViewById(R.id.sumTN),
+                monthKeHoach = dialog.findViewById(R.id.monthKeHoach);
+
+        layoutCP.setBackgroundColor(Color.parseColor("#8692f7"));
+        layoutTN.setBackgroundColor(Color.WHITE);
+        cp.setVisibility(View.VISIBLE);
+        tn.setVisibility(View.GONE);
+
+        monthKeHoach.setText("Kế hoạch chi tiêu tháng "+month);
+        KeHoachCT k=getKhChiTieu(month);
+
+
+        if(k!=null){
+            tv01.setText(String.format("%,d", k.getCt1())); tv02.setText(String.format("%,d", k.getCt2()));
+            tv03.setText(String.format("%,d", k.getCt3())); tv04.setText(String.format("%,d", k.getCt4()));
+            tv05.setText(String.format("%,d", k.getCt5())); tv06.setText(String.format("%,d", k.getCt6()));
+            tv07.setText(String.format("%,d", k.getCt7())); tv08.setText(String.format("%,d", k.getCt8()));
+            tv09.setText(String.format("%,d", k.getCt9())); tv10.setText(String.format("%,d", k.getCt10()));
+            tv11.setText(String.format("%,d", k.getCt11())); tv12.setText(String.format("%,d", k.getCt12()));
+            sumCP.setText(String.format("%,d", k.getSum()));
+        } else{
+            tv01.setText("0"); tv02.setText("0");
+            tv03.setText("0"); tv04.setText("0");
+            tv05.setText("0"); tv06.setText("0");
+            tv07.setText("0"); tv08.setText("0");
+            tv09.setText("0"); tv10.setText("0");
+            tv11.setText("0"); tv12.setText("0");
+            sumCP.setText("0");
+        }
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+        layoutCP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutCP.setBackgroundColor(Color.parseColor("#8692f7"));
+                layoutTN.setBackgroundColor(Color.WHITE);
+                cp.setVisibility(View.VISIBLE);
+                tn.setVisibility(View.GONE);
+                KeHoachCT khCT=getKhChiTieu(month);
+
+
+                if(khCT!=null){
+                    tv01.setText(String.format("%,d", khCT.getCt1())); tv02.setText(String.format("%,d", khCT.getCt2()));
+                    tv03.setText(String.format("%,d", khCT.getCt3())); tv04.setText(String.format("%,d", khCT.getCt4()));
+                    tv05.setText(String.format("%,d", khCT.getCt5())); tv06.setText(String.format("%,d", khCT.getCt6()));
+                    tv07.setText(String.format("%,d", khCT.getCt7())); tv08.setText(String.format("%,d", khCT.getCt8()));
+                    tv09.setText(String.format("%,d", khCT.getCt9())); tv10.setText(String.format("%,d", khCT.getCt10()));
+                    tv11.setText(String.format("%,d", khCT.getCt11())); tv12.setText(String.format("%,d", khCT.getCt12()));
+                    sumCP.setText(String.format("%,d", khCT.getSum()));
+                } else{
+                    tv01.setText("0"); tv02.setText("0");
+                    tv03.setText("0"); tv04.setText("0");
+                    tv05.setText("0"); tv06.setText("0");
+                    tv07.setText("0"); tv08.setText("0");
+                    tv09.setText("0"); tv10.setText("0");
+                    tv11.setText("0"); tv12.setText("0");
+                    sumCP.setText("0");
+                }
+            }
+        });
+
+        layoutTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutTN.setBackgroundColor(Color.parseColor("#8692f7"));
+                layoutCP.setBackgroundColor(Color.WHITE);
+                tn.setVisibility(View.VISIBLE);
+                cp.setVisibility(View.GONE);
+                KeHoachTN khTN = getKhThuNhap(month);
+
+                if(khTN!=null){
+                    tv001.setText(String.format("%,d", khTN.getTn1())); tv002.setText(String.format("%,d", khTN.getTn2()));
+                    tv003.setText(String.format("%,d", khTN.getTn3())); tv004.setText(String.format("%,d", khTN.getTn4()));
+                    tv005.setText(String.format("%,d", khTN.getTn5())); tv006.setText(String.format("%,d", khTN.getTn6()));
+                    sumTN.setText(String.format("%,d", khTN.getSum()));
+                } else{
+                    tv001.setText("0"); tv002.setText("0");
+                    tv003.setText("0"); tv004.setText("0");
+                    tv005.setText("0"); tv006.setText("0");
+                    sumTN.setText("0");
+                }
+            }
+        });
+
+    }
+
+
+    public KeHoachCT getKhChiTieu(String month){
+        String res=MainActivity.account.getTk();
+        Cursor getDataMoney = MainActivity.databaseSQLite.GetData("SELECT * FROM khChiTieu WHERE tk='"+res+"' AND month='"+month+"'");
+        if(getDataMoney.getCount()>0){
+            while (getDataMoney.moveToNext()) {
+                int id = getDataMoney.getInt(0);
+                String tk = getDataMoney.getString(1);
+                int ct1 = getDataMoney.getInt(2), ct2 = getDataMoney.getInt(3),
+                        ct3 = getDataMoney.getInt(4),ct4=getDataMoney.getInt(5),
+                        ct5 = getDataMoney.getInt(6), ct6 = getDataMoney.getInt(7),
+                        ct7 = getDataMoney.getInt(8), ct8 = getDataMoney.getInt(9),
+                        ct9 = getDataMoney.getInt(10), ct10 = getDataMoney.getInt(11),
+                        ct11 = getDataMoney.getInt(12), ct12 = getDataMoney.getInt(13);
+                String mon = getDataMoney.getString(14);
+                KeHoachCT k = new KeHoachCT(id, tk, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8, ct9, ct10, ct11, ct12, mon);
+                return k;
+            }
+
+        }
+        return null;
+    }
+
+    public KeHoachTN getKhThuNhap(String month){
+        String res=MainActivity.account.getTk();
+        Cursor getDataMoney = MainActivity.databaseSQLite.GetData("SELECT * FROM khThuNhap WHERE tk='"+res+"' AND month='"+month+"'");
+        if(getDataMoney.getCount()>0){
+            while (getDataMoney.moveToNext()) {
+                int id = getDataMoney.getInt(0);
+                String tk = getDataMoney.getString(1);
+                int tn1 = getDataMoney.getInt(2), tn2 = getDataMoney.getInt(3),
+                        tn3 = getDataMoney.getInt(4),tn4=getDataMoney.getInt(5),
+                        tn5 = getDataMoney.getInt(6), tn6 = getDataMoney.getInt(7);
+                String mon = getDataMoney.getString(8);
+                KeHoachTN k = new KeHoachTN(id, tk, tn1, tn2, tn3, tn4, tn5, tn6,mon);
+                return k;
+            }
+
+        }
+        return null;
     }
 
 }

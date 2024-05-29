@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lavender">#8692f7</color>
     <color name="backgr">#222121</color>
+    <color name="green">#00FF55</color>
 
 </resources>

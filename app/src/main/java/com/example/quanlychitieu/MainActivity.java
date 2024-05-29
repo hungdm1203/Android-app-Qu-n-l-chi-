@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,16 +27,19 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quanlychitieu.Adapter.ItemAdapter;
+import com.example.quanlychitieu.Adapter.ReminderAdapter;
 import com.example.quanlychitieu.Fragment.ChartFragment;
 import com.example.quanlychitieu.Fragment.HomeFragment;
 import com.example.quanlychitieu.Fragment.SearchFragment;
 import com.example.quanlychitieu.Fragment.SettingFragment;
 import com.example.quanlychitieu.Models.Account;
 import com.example.quanlychitieu.Models.Item;
+import com.example.quanlychitieu.Models.KeHoachCT;
 import com.example.quanlychitieu.Models.Money;
 import com.example.quanlychitieu.Models.Reminder;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -51,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
 
     private FloatingActionButton fab;
     private DrawerLayout drawerLayout;
+    private Handler handler;
+    private Runnable runnable;
     private BottomNavigationView bottomNavigationView;
     public static ArrayList<Item> arrChiPhi=new ArrayList<>(),
             arrThuNhap=new ArrayList<>();
@@ -58,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
     public static DatabaseSQLite databaseSQLite;
     public static ArrayList<Account> accountArrayList;
 //    public  static ArrayList<Money> moneyArrayList;
+
+    public static ArrayList<Reminder> reminderArrayList;
 
     private HomeFragment fragmentHome;
 
@@ -89,6 +97,9 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
         arrThuNhap.add(new Item("Giải thưởng", R.drawable.baseline_interests_24));
         arrThuNhap.add(new Item("Khác", R.drawable.baseline_difference_24));
 
+
+        handler = new Handler();
+
     }
 
 
@@ -109,11 +120,18 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
 
         //tao bang account
         databaseSQLite.QueryData("CREATE TABLE IF NOT EXISTS account (tk TEXT PRIMARY KEY, mk TEXT, hinhanh BLOB)");
-        databaseSQLite.QueryData("CREATE TABLE IF NOT EXISTS money (id INTEGER PRIMARY KEY AUTOINCREMENT, tk TEXT, typePrice TEXT, type TEXT, date TEXT, price INTEGER, note TEXT,FOREIGN KEY (tk) REFERENCES account(tk))");
-        databaseSQLite.QueryData("CREATE TABLE IF NOT EXISTS reminder (id INTEGER PRIMARY KEY AUTOINCREMENT, tk TEXT, time TEXT, note TEXT, status INTEGER, FOREIGN KEY (tk) REFERENCES account(tk))");
+        databaseSQLite.QueryData("CREATE TABLE IF NOT EXISTS money (id INTEGER PRIMARY KEY AUTOINCREMENT, tk TEXT, " +
+                "typePrice TEXT, type TEXT, date TEXT, price INTEGER, note TEXT,FOREIGN KEY (tk) REFERENCES account(tk))");
+        databaseSQLite.QueryData("CREATE TABLE IF NOT EXISTS reminder (id INTEGER PRIMARY KEY AUTOINCREMENT, tk TEXT, " +
+                "time TEXT, note TEXT, status INTEGER, FOREIGN KEY (tk) REFERENCES account(tk))");
+        databaseSQLite.QueryData("CREATE TABLE IF NOT EXISTS khChiTieu (id INTEGER PRIMARY KEY AUTOINCREMENT, tk TEXT," +
+                "ct1 INTEGER, ct2 INTEGER, ct3 INTEGER, ct4 INTEGER, ct5 INTEGER, ct6 INTEGER, ct7 INTEGER, ct8 INTEGER," +
+                "ct9 INTEGER, ct10 INTEGER, ct11 INTEGER, ct12 INTEGER, month TEXT, FOREIGN KEY (tk) REFERENCES account(tk))");
+        databaseSQLite.QueryData("CREATE TABLE IF NOT EXISTS khThuNhap (id INTEGER PRIMARY KEY AUTOINCREMENT, tk TEXT," +
+                "tn1 INTEGER, tn2 INTEGER, tn3 INTEGER, tn4 INTEGER, tn5 INTEGER, tn6 INTEGER," +
+                "month TEXT, FOREIGN KEY (tk) REFERENCES account(tk))");
 
         getDataAccount();
-//        getDataMoney();
     }
 
     public void getDataAccount() {
@@ -174,6 +192,8 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
             getDataMoney();
 //            replaceFragment(fragmentHome);
             Anhxa();
+            startRepeatingTask();
+
         }
     }
 
@@ -295,11 +315,31 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
                                         int price = Integer.parseInt(edtMoney.getText().toString());
                                         Money m=new Money(tk,typePrice,type,date,price,note);
                                         databaseSQLite.InsertMoney(m);
-//                                        databaseSQLite.QueryData("INSERT INTO money(tk,typePrice,type,date,price,note) VALUES('"+tk+"','"+typePrice+"','"+type+"','"+date+"','"+price+"','"+note+"')");
                                         getDataMoney();
                                         fragmentHome.getData();
                                         dialog.dismiss();
                                         Toast.makeText(MainActivity.this, "Thêm chi phí thành công!!", Toast.LENGTH_SHORT).show();
+                                        KeHoachCT k=getKhChiTieu();
+                                        int tmp[]={k.getCt1(),k.getCt2(),k.getCt3(),k.getCt4(),k.getCt5(),k.getCt6(),k.getCt7(),k.getCt8(),k.getCt9(),k.getCt10(),k.getCt11(),k.getCt12()};
+                                        int sum=0, total=0;
+                                        for (Money i:HomeFragment.arrayListMoney){
+                                            if(i.getType().equals(tvTypeCPTN.getText().toString())) sum+=i.getPrice();
+                                            if(i.getTypePrice().equals("Chi phí")){
+                                                total -= i.getPrice();
+                                            } else  total += i.getPrice();
+                                        }
+                                        if(sum>=tmp[position]){
+                                            NotificationReceiver receiver = new NotificationReceiver();
+                                            receiver.onReceive(getApplicationContext(),1, arrChiPhi.get(position).getType());
+                                        }
+                                        if(total<=0){
+                                            NotificationReceiver receiver = new NotificationReceiver();
+                                            receiver.onReceive(getApplicationContext(),2, "");
+                                        }
+                                        if(total>0 && total<=1000000){
+                                            NotificationReceiver receiver = new NotificationReceiver();
+                                            receiver.onReceive(getApplicationContext(),3, total+"");
+                                        }
                                     } catch (Exception e){
                                         Toast.makeText(MainActivity.this, "Vui lòng nhập số tiền!!", Toast.LENGTH_SHORT).show();
 
@@ -444,6 +484,83 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void startRepeatingTask() {
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                getDataReminder();
+                showCurrentTime();
+                handler.postDelayed(this, 60000); // Repeat every 1 minute (60000 milliseconds)
+            }
+        };
+        handler.post(runnable);
+    }
+
+    private void showCurrentTime() {
+        Calendar calendar = Calendar.getInstance();
+        for (int i = 0; i < reminderArrayList.size(); i++) {
+            String s[]= reminderArrayList.get(i).getTime().split(":");
+            int hour = Integer.parseInt(s[0]), minute = Integer.parseInt(s[1]);
+            if (calendar.get(Calendar.HOUR_OF_DAY)==hour&& calendar.get(Calendar.MINUTE) == minute && reminderArrayList.get(i).getStatus()==1){
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                NotificationReceiver receiver = new NotificationReceiver();
+                receiver.onReceive(this,0, "");
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopRepeatingTask();
+    }
+
+    private void stopRepeatingTask() {
+        if (handler != null && runnable != null) {
+            handler.removeCallbacks(runnable);
+        }
+    }
+
+
+    public void getDataReminder(){
+        String res=MainActivity.account.getTk();
+        Cursor getData = MainActivity.databaseSQLite.GetData("SELECT * FROM reminder WHERE tk='"+res+"'");
+        reminderArrayList = new ArrayList<>();
+        while (getData.moveToNext()) {
+            int id = getData.getInt(0);
+            String tk = getData.getString(1);
+            String time = getData.getString(2);
+            String note = getData.getString(3);
+            int status = getData.getInt(4);
+            reminderArrayList.add(new Reminder(id,tk, time, note, status));
+        }
+    }
+
+    public KeHoachCT getKhChiTieu(){
+        Calendar calendar = Calendar.getInstance();
+        int m=calendar.get(Calendar.MONTH) + 1, y= calendar.get(Calendar.YEAR);
+        String month = m+"-"+y;
+        String res=MainActivity.account.getTk();
+        Cursor c = MainActivity.databaseSQLite.GetData("SELECT * FROM khChiTieu WHERE tk='"+res+"' AND month='"+month+"'");
+        if(c.getCount()>0){
+            while (c.moveToNext()) {
+                int id = c.getInt(0);
+                String tk = c.getString(1);
+                int ct1 = c.getInt(2), ct2 = c.getInt(3),
+                        ct3 = c.getInt(4),ct4=c.getInt(5),
+                        ct5 = c.getInt(6), ct6 = c.getInt(7),
+                        ct7 = c.getInt(8), ct8 = c.getInt(9),
+                        ct9 = c.getInt(10), ct10 = c.getInt(11),
+                        ct11 = c.getInt(12), ct12 = c.getInt(13);
+                String mon = c.getString(14);
+                KeHoachCT k = new KeHoachCT(id, tk, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8, ct9, ct10, ct11, ct12, mon);
+                return k;
+            }
+
+        }
+        return null;
     }
 
 }
