@@ -486,6 +486,7 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
+<<<<<<< HEAD
     private void startRepeatingTask() {
         runnable = new Runnable() {
             @Override
@@ -564,3 +565,6 @@ public class MainActivity extends AppCompatActivity implements SettingFragment.F
     }
 
 }
+=======
+}
+>>>>>>> 4a2d4a62532a726cbc7c2f49eccc66201db255d5
